@@ -35,7 +35,7 @@ def to_png(img, cmap="gray", vmin=None, vmax=None):
     plt.imsave(buf, np.flipud(img), cmap=cmap, vmin=vmin, vmax=vmax, format="png")
     return buf.getvalue()
 
-def clean(img, sigma=20):
+def clean(img, sigma=6):
     """Remove the smooth background glow and scale to noise units."""
     resid = img - gaussian_filter(img, sigma=sigma)
     return resid / (1.4826 * np.median(np.abs(resid)) + 1e-9)
