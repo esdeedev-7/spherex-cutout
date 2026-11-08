@@ -3,3 +3,4 @@ astropy
 numpy
 requests
 matplotlib
+scipy
