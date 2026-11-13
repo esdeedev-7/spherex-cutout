@@ -24,6 +24,12 @@ st.markdown(f"""<style>
 h1, h2, h3, p, label, .stCaption {{ color: #e8ecf4 !important; }}
 </style>""", unsafe_allow_html=True)
 
+st.markdown("""<style>
+.sig { position: fixed; left: 12px; bottom: 10px; color: #c5cedd; font-size: 14px;
+  background: rgba(5,7,13,.6); padding: 4px 10px; border-radius: 8px; z-index: 999; }
+</style>
+<div class="sig">Esdee</div>""", unsafe_allow_html=True)
+
 PAGE = """<!DOCTYPE html>
 <html>
 <head>
