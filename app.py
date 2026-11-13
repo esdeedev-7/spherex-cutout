@@ -24,6 +24,7 @@ PAGE = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SPHEREx Sky Viewer</title>
 <style>
+body { background: #05070d url("data:image/jpeg;base64,__BG__") center / cover fixed; color: #e8ecf4; }
 body { font-family: sans-serif; margin: 8px; }
 .stage { position: relative; width: 640px; max-width: 100%; }
 .stage img { width: 100%; display: block; }
@@ -128,6 +129,13 @@ def check_link(url):
     if not url:
         return "Paste a SPHEREx link first."
     if urlparse(url).hostname != ALLOWED_HOST:
+      import os
+BG = base64.b64encode(open(os.path.join(os.path.dirname(__file__), "stars.jpg"), "rb").read()).decode()
+
+st.markdown(f"""<style>
+.stApp {{ background: #05070d url("data:image/jpeg;base64,{BG}") center / cover fixed; }}
+h1, h2, h3, p, label, .stCaption {{ color: #e8ecf4 !important; }}
+</style>""", unsafe_allow_html=True)
         return "Only IRSA SPHEREx links are allowed."
     return None
 
