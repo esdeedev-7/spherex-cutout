@@ -149,7 +149,7 @@ def build_viewer(url1, url2, ra, dec, size):
     lo, hi = np.nanpercentile(a, [1, 99.5])
     ca = gaussian_filter(clean(a), 1.5)
     cb = gaussian_filter(clean(b), 1.5)
-    html = PAGE.replace("__A__", to_uri(a, "gray", lo, hi))
+    html = PAGE.replace("__BG__", BG).replace("__A__", to_uri(a, "gray", lo, hi))
     html = html.replace("__B__", to_uri(b, "gray", lo, hi))
     html = html.replace("__D__", to_uri(cb - ca, "bwr", -10, 10))
     html = html.replace("__LA__", date_label(url1)).replace("__LB__", date_label(url2))
@@ -175,3 +175,4 @@ else:
         components.html(html, height=1200, scrolling=True)
     except Exception as e:
         st.error(f"Could not build the viewer: {e}")
+
