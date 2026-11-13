@@ -130,7 +130,7 @@ def check_link(url):
         return "Paste a SPHEREx link first."
     if urlparse(url).hostname != ALLOWED_HOST:
       import os
-BG = base64.b64encode(open(os.path.join(os.path.dirname(__file__), "stars.jpg"), "rb").read()).decode()
+BG = base64.b64encode(open(os.path.join(os.path.dirname(__file__), "star.jpg"), "rb").read()).decode()
 
 st.markdown(f"""<style>
 .stApp {{ background: #05070d url("data:image/jpeg;base64,{BG}") center / cover fixed; }}
