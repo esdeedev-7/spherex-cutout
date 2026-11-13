@@ -1,7 +1,7 @@
 import io
+import os
 import re
 import base64
-import datetime
 import numpy as np
 import requests
 import streamlit as st
@@ -16,6 +16,13 @@ from urllib.parse import urlparse
 ALLOWED_HOST = "irsa.ipac.caltech.edu"
 BUILT_IN_1 = "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr2/level2/2025W19_2B/l2b-v20-2025-247/6/level2_2025W19_2B_0073_2D6_spx_l2b-v20-2025-247.fits"
 BUILT_IN_2 = "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr2/level2/2025W25_1B/l2b-v20-2025-253/6/level2_2025W25_1B_0768_1D6_spx_l2b-v20-2025-253.fits"
+
+BG = base64.b64encode(open(os.path.join(os.path.dirname(__file__), "stars.jpg"), "rb").read()).decode()
+
+st.markdown(f"""<style>
+.stApp {{ background: #05070d url("data:image/jpeg;base64,{BG}") center / cover fixed; }}
+h1, h2, h3, p, label, .stCaption {{ color: #e8ecf4 !important; }}
+</style>""", unsafe_allow_html=True)
 
 PAGE = """<!DOCTYPE html>
 <html>
@@ -111,7 +118,7 @@ def clean(img, sigma=2):
     return resid / (1.4826 * np.median(np.abs(resid)) + 1e-9)
 
 def to_uri(img, cmap, vmin, vmax, scale=4):
-    img = np.kron(np.flipud(img), np.ones((scale, scale)))  # enlarge, keep pixels sharp
+    img = np.kron(np.flipud(img), np.ones((scale, scale)))
     buf = io.BytesIO()
     plt.imsave(buf, img, cmap=cmap, vmin=vmin, vmax=vmax, format="png")
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
@@ -119,23 +126,11 @@ def to_uri(img, cmap, vmin, vmax, scale=4):
 def date_label(url):
     m = re.search(r"(2025W\d+)", url)
     return m.group(1) if m else "Unknown week"
-    d = re.search(r"-2025-(\d{3})", url)
-    if d:
-        date = datetime.date(2025, 1, 1) + datetime.timedelta(days=int(d.group(1)) - 1)
-        return f"{week} ({date:%B %d, %Y})"
-    return week
 
 def check_link(url):
     if not url:
         return "Paste a SPHEREx link first."
     if urlparse(url).hostname != ALLOWED_HOST:
-      import os
-BG = base64.b64encode(open(os.path.join(os.path.dirname(__file__), "star.jpg"), "rb").read()).decode()
-
-st.markdown(f"""<style>
-.stApp {{ background: #05070d url("data:image/jpeg;base64,{BG}") center / cover fixed; }}
-h1, h2, h3, p, label, .stCaption {{ color: #e8ecf4 !important; }}
-</style>""", unsafe_allow_html=True)
         return "Only IRSA SPHEREx links are allowed."
     return None
 
@@ -175,4 +170,3 @@ else:
         components.html(html, height=1200, scrolling=True)
     except Exception as e:
         st.error(f"Could not build the viewer: {e}")
-
