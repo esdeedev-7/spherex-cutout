@@ -117,7 +117,7 @@ def to_uri(img, cmap, vmin, vmax, scale=4):
 
 def date_label(url):
     m = re.search(r"(2025W\d+)", url)
-    week = m.group(1) if m else "Unknown week"
+    return m.group(1) if m else "Unknown week"
     d = re.search(r"-2025-(\d{3})", url)
     if d:
         date = datetime.date(2025, 1, 1) + datetime.timedelta(days=int(d.group(1)) - 1)
@@ -149,7 +149,7 @@ def build_viewer(url1, url2, ra, dec, size):
 
 url1 = st.text_input("First SPHEREx link (earlier week)", value=BUILT_IN_1)
 url2 = st.text_input("Second SPHEREx link (later week)", value=BUILT_IN_2)
-st.caption("The two links above are a built-in example (September and October 2025). "
+st.caption("The two links above are a built-in example (May and June 2025). "
            "Paste any two SPHEREx links from IRSA to compare other weeks. Both links must be "
            "the same detector band (D6) and the same sky spot, and RA and Dec must point to that spot.")
 
